@@ -43,16 +43,12 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     private router: Router,
 
     private location: Location,
-    private spinner: NgxSpinnerService,
+    private spinner: NgxSpinnerService
 
-    private activedRoutes: ActivatedRoute,
   ) {
-    this.activedRoutes.queryParams.subscribe((params) => {
-      this.isVerified = params['isverified'];
-    });
+  
   }
 
-  // previousUrl: any = '';
   ngOnInit(): void {
     this.startCountdown();
     
