@@ -3,7 +3,6 @@ import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -45,7 +44,6 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
 
     private location: Location,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService,
 
     private activedRoutes: ActivatedRoute,
   ) {
@@ -75,9 +73,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     }
   }
 
-  // private destroy$ = new Subject<void>();
 
-  // countdown: any;
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
