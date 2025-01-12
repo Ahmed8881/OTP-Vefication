@@ -32,31 +32,23 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   isVerified: any;
 
   verificationCode: string[] = ['', '', '', '', '',''];
-  // email: string = 'example@gmail.com';
   @ViewChildren('codeInput') codeInputs!: QueryList<ElementRef>;
-
-  // isVerified: any;
 
   @ViewChild('otpInput0, otpInput1, otpInput2, otpInput3, otpInput4, otpInput5') otpInputs!: QueryList<ElementRef>;
 
   constructor(
     private router: Router,
-
     private location: Location,
     private spinner: NgxSpinnerService
-
-  ) {
-  
-  }
+  ) {}
 
   ngOnInit(): void {
     this.startCountdown();
-    
-        this.router.events.subscribe((event) => {
-          if (event instanceof NavigationStart) {
-            this.previousUrl = event.url;
-          }
-        });
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.previousUrl = event.url;
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -69,7 +61,6 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     }
   }
 
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -80,7 +71,6 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   goBack() {
     this.location.back();
   }
-  // Function for navigation End
 
   // Start countdown timer
   startCountdown() {
@@ -103,7 +93,6 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-
   moveToNext(nextInput: HTMLInputElement): void {
     if (nextInput) {
       setTimeout(() => nextInput.focus(), 40);
@@ -115,27 +104,21 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
       setTimeout(() => previousInput.focus(), 40);
     }
   }
-  // Move to the next input field
 
   // Check if OTP is complete
-  // otpArray: string[] = ['', '', '', '', '', ''];
   isOtpComplete(): boolean {
     return this.otpArray.every((char) => char !== '');
   }
 
   // Verify OTP
   verifyOtp() {
-
     const otpCode = this.otpArray.join('');
     const payload = {
       otp: otpCode,
     };
-
-  
   }
 
-
-    // Resend OTP
+  // Resend OTP
   resendCode() {
     this.otpArray = ['', '', '', '', '', ''];
     this.timer = '02:00';
@@ -178,90 +161,5 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
 
   resendVerifyOtp() {
     this.spinner.show();
-
   }
-
-
-
-  // onDigitChange(event: Event, index: number): void {
-  //   const inputEl = event.target as HTMLInputElement;
-  //   let value = inputEl.value;
-
-  //   // If user typed more than one char, keep only the last
-  //   if (value.length > 1) {
-  //     value = value.slice(-1);
-  //   }
-
-  //   // Store that single digit in the array
-  //   this.verificationCode[index] = value;
-  //   inputEl.value = value;
-
-  //   // Focus next input if this one is not empty and isn't the last input
-  //   if (value && index < this.verificationCode.length - 1) {
-  //     const inputsArray = this.codeInputs.toArray();
-  //     inputsArray[index + 1]?.nativeElement?.focus();
-  //   }
-  // }
-  // onKeyDown(event: KeyboardEvent, index: number): void {
-  //   const input = event.target as HTMLInputElement;
-
-  //   if (event.key === 'Backspace') {
-  //     if (!input.value && index > 0) {
-  //       const inputs = this.codeInputs.toArray();
-  //       this.verificationCode[index - 1] = '';
-  //       inputs[index - 1].nativeElement.value = '';
-  //       inputs[index - 1].nativeElement.focus();
-  //       event.preventDefault();
-  //     }
-  //   } else if (event.key === 'ArrowLeft' && index > 0) {
-  //     const inputs = this.codeInputs.toArray();
-  //     inputs[index - 1].nativeElement.focus();
-  //     event.preventDefault();
-  //   } else if (event.key === 'ArrowRight' && index < this.verificationCode.length - 1) {
-  //     const inputs = this.codeInputs.toArray();
-  //     inputs[index + 1].nativeElement.focus();
-  //     event.preventDefault();
-  //   }
-  // }
-
-  // handlePaste(event: ClipboardEvent): void {
-  //   event.preventDefault();
-  //   const pastedData = event.clipboardData?.getData('text');
-  //   if (!pastedData) return;
-
-  //   const numbers = pastedData.replace(/\D/g, '').slice(0, this.verificationCode.length);
-  //   this.verificationCode = [...numbers.padEnd(this.verificationCode.length, '')];
-
-  //   const inputs = this.codeInputs.toArray();
-  //   this.verificationCode.forEach((value, index) => {
-  //     inputs[index].nativeElement.value = value;
-  //   });
-
-  //   const nextEmptyIndex = this.verificationCode.findIndex(val => !val);
-  //   const focusIndex = nextEmptyIndex === -1 ? this.verificationCode.length - 1 : nextEmptyIndex;
-  //   inputs[focusIndex].nativeElement.focus();
-  // }
-
-  // resendCode() {
-  //   console.log('Resending verification code');
-  // }
-
-  // onVerify() {
-  //   const code = this.verificationCode.join('');
-  //   if (code.length === this.verificationCode.length) {
-  //     const payload = {
-  //       otp: code,
-  //     };
-
-  //     // Check the previous URL and call the appropriate function
-  //   if (this.isVerified === 'false') {
-  //     this.verifyOtpAfterForgetPassword(payload);
-  //   } else if (this.isVerified === 'true') {
-  //     this.verifyOtpAfterSignUp(payload);
-  //   } else {
-  //   }
-
-
-  //   }
-  // }
 }
