@@ -96,8 +96,8 @@
                 [(ngModel)]="otpArray[0]"
                 (input)="moveToNext(input2)"
                 (keyup.backspace)="moveToPrevious(input1)"
-                (paste)="handlePaste($event)"
-              />
+                />
+                <!-- (paste)="handlePaste($event)" -->
               <input
                 #input2
                 type="text"

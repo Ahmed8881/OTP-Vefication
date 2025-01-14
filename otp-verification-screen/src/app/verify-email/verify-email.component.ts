@@ -3,6 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -32,35 +33,51 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   isVerified: any;
 
   verificationCode: string[] = ['', '', '', '', '',''];
+  // email: string = 'example@gmail.com';
   @ViewChildren('codeInput') codeInputs!: QueryList<ElementRef>;
+
+  // isVerified: any;
 
   @ViewChild('otpInput0, otpInput1, otpInput2, otpInput3, otpInput4, otpInput5') otpInputs!: QueryList<ElementRef>;
 
   constructor(
     private router: Router,
-    private location: Location,
-    private spinner: NgxSpinnerService
-  ) {}
 
-  ngOnInit(): void {
-    this.startCountdown();
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        this.previousUrl = event.url;
-      }
+    private location: Location,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
+ 
+    private activedRoutes: ActivatedRoute,
+  ) {
+    this.activedRoutes.queryParams.subscribe((params) => {
+      this.isVerified = params['isverified'];
     });
+  }
+
+  // previousUrl: any = '';
+  ngOnInit(): void {
+    // this.startCountdown();
+    
+    //     this.router.events.subscribe((event) => {
+    //       if (event instanceof NavigationStart) {
+    //         this.previousUrl = event.url;
+    //       }
+    //     });
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.codeInputs.first?.nativeElement?.focus();
-    });
+    // setTimeout(() => {
+    //   this.codeInputs.first?.nativeElement?.focus();
+    // });
 
-    if (this.otpInputs && this.otpInputs.length) {
-      this.otpInputs.first.nativeElement.focus();
-    }
+    // if (this.otpInputs && this.otpInputs.length) {
+    //   this.otpInputs.first.nativeElement.focus();
+    // }
   }
 
+  // private destroy$ = new Subject<void>();
+
+  // countdown: any;
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -71,10 +88,11 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   goBack() {
     this.location.back();
   }
+  // Function for navigation End
 
   // Start countdown timer
   startCountdown() {
-    let totalTime = 120; // 2 minutes in seconds
+    let totalTime = 120;
     this.isResendDisabled = true;
     this.countdown = setInterval(() => {
       if (totalTime > 0) {
@@ -93,6 +111,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
+
   moveToNext(nextInput: HTMLInputElement): void {
     if (nextInput) {
       setTimeout(() => nextInput.focus(), 40);
@@ -105,61 +124,38 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Check if OTP is complete
   isOtpComplete(): boolean {
     return this.otpArray.every((char) => char !== '');
   }
 
   // Verify OTP
   verifyOtp() {
+
     const otpCode = this.otpArray.join('');
-    const payload = {
-      otp: otpCode,
-    };
+
   }
 
-  // Resend OTP
+  private verifyOtpAfterSignUp(payload: any) {
+      this.spinner.show();
+
+    }
+  
+    private verifyOtpAfterForgetPassword(payload: any) {
+      this.spinner.show();
+ 
+    }
+
+    // Resend OTP
   resendCode() {
     this.otpArray = ['', '', '', '', '', ''];
     this.timer = '02:00';
     this.startCountdown();
-    this.resendVerifyOtp();
+ 
   }
-
-  // Handle the paste event
-  handlePaste(event: ClipboardEvent) {
-    event.preventDefault(); // Prevent the default paste behavior
-    const clipboardData = event.clipboardData || (window as any).clipboardData;
-    const pastedText = clipboardData?.getData('text') || '';
-
-    // Only process if the pasted text length matches or is less than the number of inputs
-    if (pastedText.length <= this.otpArray.length) {
-      for (let i = 0; i < pastedText.length; i++) {
-        this.otpArray[i] = pastedText[i];
-
-        // Automatically set the value in the respective input fields
-        const inputElement =
-          document.querySelectorAll<HTMLInputElement>('.otp-input')[i];
-        if (inputElement) {
-          inputElement.value = pastedText[i];
-        }
-      }
-
-      // Focus on the next empty input field
-      const nextEmptyIndex = pastedText.length;
-      if (nextEmptyIndex < this.otpArray.length) {
-        const nextInput =
-          document.querySelectorAll<HTMLInputElement>('.otp-input')[
-          nextEmptyIndex
-          ];
-        if (nextInput) {
-          nextInput.focus();
-        }
-      }
-    }
-  }
-
   resendVerifyOtp() {
     this.spinner.show();
+
   }
+
+
 }
