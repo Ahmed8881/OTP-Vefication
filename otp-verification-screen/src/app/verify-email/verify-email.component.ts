@@ -56,23 +56,19 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
 
   // previousUrl: any = '';
   ngOnInit(): void {
-    // this.startCountdown();
+    this.startCountdown();
     
-    //     this.router.events.subscribe((event) => {
-    //       if (event instanceof NavigationStart) {
-    //         this.previousUrl = event.url;
-    //       }
-    //     });
+  
   }
 
   ngAfterViewInit() {
-    // setTimeout(() => {
-    //   this.codeInputs.first?.nativeElement?.focus();
-    // });
+    setTimeout(() => {
+      this.codeInputs.first?.nativeElement?.focus();
+    });
 
-    // if (this.otpInputs && this.otpInputs.length) {
-    //   this.otpInputs.first.nativeElement.focus();
-    // }
+    if (this.otpInputs && this.otpInputs.length) {
+      this.otpInputs.first.nativeElement.focus();
+    }
   }
 
   // private destroy$ = new Subject<void>();
